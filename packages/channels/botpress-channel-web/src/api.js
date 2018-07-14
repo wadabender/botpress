@@ -84,11 +84,7 @@ module.exports = async (bp, config) => {
     createConversation
   } = db(knex, config)
 
-<<<<<<< HEAD
-  const { getOrCreateUser, getUserProfile } = await users(bp, config)
-=======
-  const { getOrCreateUser, ensureUserExists } = await users(bp, config)
->>>>>>> feat(channel-web): added ensureUserExists method
+  const { getOrCreateUser, getUserProfile, ensureUserExists } = await users(bp, config)
 
   const router = bp.getRouter('botpress-platform-webchat', { auth: false })
 
@@ -132,7 +128,7 @@ module.exports = async (bp, config) => {
       let { conversationId } = req.query || {}
       conversationId = conversationId && parseInt(conversationId)
 
-      if (!_.includes(['text', 'quick_reply', 'form', 'login_prompt', 'visit'], payload.type)) {
+      if (!['text', 'quick_reply', 'form', 'login_prompt', 'visit'].includes(payload.type)) {
         // TODO: Support files
         return res.status(400).send(ERR_MSG_TYPE)
       }
@@ -219,7 +215,7 @@ module.exports = async (bp, config) => {
 
   async function sendNewMessage(userId, conversationId, payload) {
     // perf
-    // return
+    return
 
     if (!payload.text || !_.isString(payload.text) || payload.text.length > 360) {
       throw new Error('Text must be a valid string of less than 360 chars')
